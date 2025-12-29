@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Codificación de caracteres -->
+    <meta charset="UTF-8">
+
+    <!-- Título principal de la aplicación -->
+    <title>APP SDR</title>
+
+    <!-- Configuración responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* Evita problemas de tamaño con padding y bordes */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Estilos generales del cuerpo */
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7fc8f8 0%, #1f3c4a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Contenedor principal */
+        .container {
+            background: white;
+            padding: 35px 30px;
+            border-radius: 18px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== TÍTULO PRINCIPAL ===== */
+        .title-text {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: #203a43;
+            margin-bottom: 6px;
+        }
+
+        /* ===== SUBTÍTULO ===== */
+        .subtitle {
+            margin-bottom: 28px;
+            font-size: 15px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Icono EPS del subtítulo */
+        .subtitle img {
+            width: 20px;
+        }
+
+        /* ===== CONTENEDOR DE TARJETAS ===== */
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Quita el subrayado de los enlaces */
+        .cards a {
+            text-decoration: none;
+        }
+
+        /* Tarjeta base de cada EPS */
+        .card {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #203a43;
+            border-radius: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.25s ease;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Contenedor fijo del logo (para igualar alturas) */
+        .logo-box {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ajustes generales de los logos */
+        .logo-box img {
+            max-height: 42px;
+            max-width: 150px;
+            object-fit: contain;
+        }
+
+        /* ===== EFECTOS HOVER POR EPS ===== */
+        .card.sanitas:hover {
+            background: #e8f4f8;
+            border-color: #4aa3c4;
+        }
+
+        .card.salud-total:hover {
+            background: #e9f6ee;
+            border-color: #4caf7a;
+        }
+
+        .card.fomag:hover {
+            background: #fff6e5;
+            border-color: #f2b705;
+        }
+
+        .card.mutual:hover {
+            background: #f1e9fb;
+            border-color: #8e63d9;
+        }
+
+        .card.nueva:hover {
+            background: #fdeaea;
+            border-color: #e57373;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #e0e0e0;
+            opacity: 0.9;
+        }
+
+        .footer span {
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .container {
+                padding: 28px 22px;
+            }
+
+            .title-text {
+                font-size: 20px;
+            }
+
+            .logo-box {
+                height: 42px;
+            }
+
+            .logo-box img {
+                max-height: 36px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+
+        <!-- Título -->
+        <div class="title-text">
+            <img src="{{ url_for('static', filename='img/SDRlogo.png') }}" alt="EPS"
+            style="height:150px; max-width:auto;">
+
+        </div>
+
+        <!-- Subtítulo con icono -->
+        <div class="subtitle">
+            Seleccione la EPS
+        </div>
+
+        <!-- Tarjetas de EPS -->
+        <div class="cards">
+
+            <!-- SANITAS -->
+            <a href="/eps/SANITAS">
+                <div class="card sanitas">
+                    <div class="logo-box">
+                        <img src="{{ url_for('static', filename='img/sani1.png') }}" alt="Sanitas">
+                    </div>
+                </div>
+            </a>
+
+            <!-- SALUD TOTAL -->
+            <a href="/eps/SALUD_TOTAL">
+                <div class="card salud-total">
+                    <div class="logo-box">
+                        <img src="{{ url_for('static', filename='img/saludtotal.png') }}" alt="Salud Total">
+                    </div>
+                </div>
+            </a>
+
+            <!-- FOMAG -->
+            <a href="/eps/FOMAG">
+                <div class="card fomag">
+                    <div class="logo-box">
+                        <img src="{{ url_for('static', filename='img/fomag.png') }}" alt="FOMAG"
+                            style="height:50px; max-width:105px;">
+                    </div>
+                </div>
+            </a>
+
+            <!-- MUTUAL SER -->
+            <a href="/eps/MUTUAL SER">
+                <div class="card mutual">
+                    <div class="logo-box">
+                        <img src="{{ url_for('static', filename='img/mutualser.png') }}" alt="Mutual Ser">
+                    </div>
+                </div>
+            </a>
+
+            <!-- NUEVA EPS -->
+            <a href="/eps/NUEVA EPS">
+                <div class="card nueva">
+                    <div class="logo-box">
+                        <img src="{{ url_for('static', filename='img/nuevaeps.png') }}" alt="Nueva EPS"
+                            style="height:50px; max-width:105px;">
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <span>APP SDR</span> · VZ & JH · © 2025
+    </div>
+
+</body>
+
+</html>

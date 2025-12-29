@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Codificación de caracteres -->
+    <meta charset="UTF-8">
+
+    <!-- Título dinámico según la EPS seleccionada -->
+    <title>{{ eps }} | APP SDR</title>
+
+    <!-- Hace que la página sea responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* Evita problemas de tamaño con padding y bordes */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Estilos generales del cuerpo */
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7fc8f8, #1f3c4a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Contenedor principal de la vista */
+        .container {
+            background: #ffffff;
+            padding: 34px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+            position: relative;
+            text-align: center;
+        }
+
+        /* Contenedor de botones superiores (volver / refrescar) */
+        .top-actions {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Estilo base para botones con icono */
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 1px solid #d5e1e8;
+            background: #f7fbfd;
+            color: #1f3c4a;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        /* Efecto hover para botones superiores */
+        .icon-btn:hover {
+            background: #e6eef2;
+            border-color: #b8d1de;
+        }
+
+        /* Contenedor del logo de la EPS */
+        .eps-logo {
+            width: 220px;
+            height: 90px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ajuste del logo */
+        .eps-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Alerta informativa exclusiva para FOMAG */
+        .alert-profesional {
+            background: #f4f8fb;
+            border-left: 4px solid #1f3c4a;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        /* Título de la alerta */
+        .alert-profesional h4 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f3c4a;
+            text-transform: uppercase;
+        }
+
+        /* Texto de la alerta */
+        .alert-profesional p {
+            margin: 0;
+            font-size: 14px;
+            color: #425b6b;
+            line-height: 1.5;
+        }
+
+        /* Etiqueta del formulario */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-align: left;
+            color: #203a43;
+        }
+
+        /* Campo de texto para la ruta */
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        /* Botón principal del formulario */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #1f3c4a;
+            background: #1f3c4a;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* Hover del botón principal */
+        .submit-btn:hover {
+            background: #2e5f73;
+        }
+
+        /* Mensaje de éxito */
+        .msg.success {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #e7f6ec;
+            color: #1e7e34;
+            border: 1px solid #1e7e34;
+        }
+
+        /* Footer fijo inferior */
+        .footer {
+            position: fixed;
+            bottom: 12px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #e6eef2;
+        }
+
+        .footer span {
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Botones de navegación -->
+        <div class="top-actions">
+            <!-- Volver a la página principal -->
+            <a href="/" class="icon-btn" title="Volver">⮌</a>
+
+            <!-- Refrescar la página (limpia mensaje y formulario) -->
+            <button class="icon-btn" title="Refrescar" onclick="refreshPage()">↻</button>
+        </div>
+
+        <!-- Logo dinámico de la EPS -->
+        {% if logo %}
+        <div class="eps-logo">
+            <img src="{{ url_for('static', filename='img/' + logo) }}" alt="{{ eps }}">
+        </div>
+        {% endif %}
+
+        <!-- Alerta visible solo cuando la EPS es FOMAG -->
+        {% if eps.upper().replace(" ", "_") == "FOMAG" %}
+        <div class="alert-profesional">
+            <h4>Requisito obligatorio – FOMAG</h4>
+            <p>
+                El archivo <strong>LDP.pdf</strong> debe estar ubicado en la
+                <strong>ruta principal</strong>, fuera de las carpetas FC,
+                antes de ejecutar el proceso.
+            </p>
+        </div>
+        {% endif %}
+
+        <!-- Formulario principal -->
+        <form method="POST">
+            <label>Ruta de las facturas</label>
+
+            <!-- Campo donde el usuario ingresa la ruta -->
+            <input type="text" name="folder" placeholder="Ej: D:\facturacion\{{ eps }}" required>
+
+            <!-- Botón para iniciar el proceso -->
+            <button type="submit" class="submit-btn">Renombrar Facturas</button>
+        </form>
+
+        <!-- Mensaje que se muestra solo si el proceso fue exitoso -->
+        {% if success %}
+        <div class="msg success" id="successMsg">
+            ✔ Proceso completado correctamente
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <span>APP SDR</span> · VZ & JH · © 2025
+    </div>
+
+    <!-- Función para refrescar la página sin recargar POST -->
+    <script>
+        function refreshPage() {
+            window.location.href = window.location.pathname;
+        }
+    </script>
+
+</body>
+
+</html>
